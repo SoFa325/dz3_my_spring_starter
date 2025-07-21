@@ -1,10 +1,24 @@
-weyland:
-  audit:
-    mode: kafka
-    kafka-topic: android-audit
+server:
+  port: 8080
+
+synthetic:
+  core:
+    audit:
+      mode: console # kafka
+      kafka-topic: android-audit
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
 
 management:
   endpoints:
     web:
       exposure:
         include: metrics
+  metrics:
+    tags:
+      application: bishop-prototype
