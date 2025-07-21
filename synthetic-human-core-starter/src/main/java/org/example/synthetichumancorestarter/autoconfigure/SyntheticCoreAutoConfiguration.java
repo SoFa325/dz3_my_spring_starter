@@ -18,6 +18,7 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
+import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
@@ -48,6 +49,7 @@ public class SyntheticCoreAutoConfiguration {
     }
 
     @Bean
+    @Primary
     @ConditionalOnMissingBean(AuditSender.class)
     public AuditSender auditSender() {
         return new ConsoleAuditSender();
@@ -58,7 +60,6 @@ public class SyntheticCoreAutoConfiguration {
             name = "synthetic.core.audit.mode",
             havingValue = "console"
     )
-    @ConditionalOnMissingBean
     public ConsoleAuditSender consoleAuditSender() {
         return new ConsoleAuditSender();
     }
@@ -69,7 +70,6 @@ public class SyntheticCoreAutoConfiguration {
             name = "synthetic.core.audit.mode",
             havingValue = "kafka"
     )
-    @ConditionalOnMissingBean
     public KafkaAuditSender kafkaAuditSender(KafkaTemplate<String, String> kafkaTemplate) {
         return new KafkaAuditSender(
                 kafkaTemplate,
