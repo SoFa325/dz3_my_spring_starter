@@ -1,0 +1,4 @@
+synthetic:
+  core:
+    audit:
+      mode: console

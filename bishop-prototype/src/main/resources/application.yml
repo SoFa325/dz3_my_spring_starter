@@ -1,0 +1,10 @@
+weyland:
+  audit:
+    mode: kafka
+    kafka-topic: android-audit
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics
