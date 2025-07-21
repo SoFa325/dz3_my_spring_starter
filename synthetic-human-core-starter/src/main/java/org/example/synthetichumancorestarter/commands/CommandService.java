@@ -2,18 +2,29 @@ package org.example.synthetichumancorestarter.commands;
 
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class CommandService {
     private final ThreadPoolTaskExecutor criticalExecutor;
     private final ThreadPoolTaskExecutor commonExecutor;
     private final MeterRegistry meterRegistry;
 
+    @Autowired
+    public CommandService(
+            @Qualifier("criticalExecutor") ThreadPoolTaskExecutor criticalExecutor,
+            @Qualifier("commonExecutor") ThreadPoolTaskExecutor commonExecutor,
+            MeterRegistry meterRegistry
+    ) {
+        this.criticalExecutor = criticalExecutor;
+        this.commonExecutor = commonExecutor;
+        this.meterRegistry = meterRegistry;
+    }
 
     public void executeCommand(CommandDTO command) {
         Runnable task = () -> {
